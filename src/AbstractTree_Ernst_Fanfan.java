@@ -4,6 +4,7 @@
 //Instructor: Dr. Haddad
 //Assignment: 5
 //IDE Name: IntelliJ
+
 public abstract class AbstractTree_Ernst_Fanfan<E> implements Tree_Ernst_Fanfan<E> {
     @Override
     /** Inorder traversal from the root*/
