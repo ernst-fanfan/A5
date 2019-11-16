@@ -6,21 +6,21 @@ public class Menu_Ernst_Fanfan {
     private int choice =-1;
 
     public void startMenu(){
-        System.out.println("-----MAIN MENU-----\n" +
+        System.out.println("\n \n-----MAIN MENU-----\n" +
                 "0 - Exit Program\n" +
                 "1 – Read Input From Text File\n" +
                 "2 – Read Input Form Keyboard");
     }
 
     public void fromUserMenu(){
-        System.out.println("-----USER MENU-----\n" +
+        System.out.println("\n \n-----USER MENU-----\n" +
                 "0 - Main Menu\n" +
                 "1 – Add Node\n" +
                 "2 - Remove last Node");
     }
 
     public void fromFileMenu(){
-        System.out.println("-----FILE MENU-----\n" +
+        System.out.println("\n \n-----FILE MENU-----\n" +
                 "0 - Main Menu\n" +
                 "1 – Display file content\n" +
                 "2 - Process File");
