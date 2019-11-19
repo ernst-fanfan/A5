@@ -1,3 +1,10 @@
+//Class: CS 5040
+//Term: Fall 2019
+//Name: Ernst Fanfan
+//Instructor: Dr. Haddad
+//Assignment: 5
+//IDE Name: IntelliJ
+
 public class TestBST_Ernst_Fanfan {
     public static void main(String[] args) {
         // Create a BST

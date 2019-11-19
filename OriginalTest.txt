@@ -1,0 +1,5 @@
+Following the test programs above, write a new test program called
+RemoveDuplicates.java. The program reads text input from keyboard or a text file
+and adds the words to a BST. The program then traverses the BST and prints out the
+words in order on the screen (or to output text file). Note that you may need to
+make some changes to BST.java.
