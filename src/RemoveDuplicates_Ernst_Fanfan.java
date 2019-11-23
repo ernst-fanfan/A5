@@ -16,200 +16,99 @@ public class RemoveDuplicates_Ernst_Fanfan {
         /**Start of program*/
         while(exit != true) {//main loop
             Menu_Ernst_Fanfan start = new Menu_Ernst_Fanfan();//new menu object
-            int choice = start.setChoice(0);//Scan and pass choice
-            exit = process(choice);//process choice and query exit
+            int choice = start.setChoice();//Scan and pass choice
+            exit = level2(choice);//process choice and query exit
         }
     }
 
-    /***************************************************
-     * Support methods
-     ***************************************************/
-    /**Adding Node Loop*/
-    public static void addingNodeLoop(Stack_Ernst_Fanfan<String> originalTest){
-        boolean exit = false;//exit trigger
-
-        while(exit != true){//adding node loop
-            Menu_Ernst_Fanfan addNodeMenu = new Menu_Ernst_Fanfan();//new menu object
-            int choice = addNodeMenu.setChoice(3);//Scan and pass choice
-            exit = addNodeProcess(choice, originalTest);//process choice and query exit
-        }
+    /*********************
+     * Level 2 of program*
+     * *******************/
+    private static boolean level2(int choice) {//controls flow to the second lvl of program
+        boolean exit = false;//holds exit trigger
+        if (choice == 0)
+            exit = true;
+        else if (choice == 1)
+            processFromFile();
+        else
+            processFromUser();
+        return exit;
     }
 
-    /**removing duplicates*/
-    public static void removeDuplicate(BST_Ernst_Fanfan<String> tree, Stack_Ernst_Fanfan<String> originalText){
-        while (originalText.isEmpty()!=true){
-            tree.insert(originalText.top());
-            originalText.pop();
-        }
-    }
-
-    /**load file*/
-    public static void loadFile(BST_Ernst_Fanfan<String> tree) throws IOException {
-        File originalTest = new File("OriginalTest.txt");//creat logical file
-        originalTest.createNewFile();//create file
-        PrintStream output= new PrintStream("OriginalTest.txt");
-        output.print("Following the test programs above, write a new test program called\n" +
-                "RemoveDuplicates.java. The program reads text input from keyboard or a text file\n" +
-                "and adds the words to a BST. The program then traverses the BST and prints out the\n" +
-                "words in order on the screen (or to output text file). Note that you may need to\n" +
-                "make some changes to BST.java.");
-        Scanner input= new Scanner(originalTest);//load file into scanner
-        System.out.println("Original Text from input file:");
-        while (input.hasNext()){//display loop
-            tree.insert(input.next()); //read one word at a time
-            System.out.print(input.next()+" ");//Display one word at a time
-        }
-    }
-    /**Save to file*/
-    public static void saveToFile(BST_Ernst_Fanfan<String> tree) throws IOException {
-        File originalTest = new File("ProcessedText.txt");//creat logical file
-        originalTest.createNewFile();//create file
-        PrintStream output= new PrintStream(new File("ProcessedText.txt"));//create output stream
-        Iterator iterator = tree.iterator();//iterate tree
-        while (iterator.hasNext()){//save to file loop
-            output.print(iterator.next()+" "); //read one word at a time
-        }
-    }
-
-    /***************************************************
-     * Paths:
-     ***************************************************/
-     /**From user input*/
-    public static void fromUser(){
-        BST_Ernst_Fanfan<String> tree = new BST_Ernst_Fanfan<>();//New BST
-        Stack_Ernst_Fanfan<String> originalTest = new Stack_Ernst_Fanfan<>();
-        Scanner inputString = new Scanner(System.in);//new scanner
+    /**path 1 start*/
+    private static void processFromFile() {//request file path and name from user, load data then pass to lvl 3
         boolean exit = false;
-
-        /**start of method*/
-        while(exit != true) {
-            System.out.println("Processing from User!");
-            Menu_Ernst_Fanfan userInMenu = new Menu_Ernst_Fanfan();//new menu object
-            int choice = userInMenu.setChoice(1);//Scan and pass choice
-            exit = userProcess(choice, tree, originalTest);
+        while (exit != true) {
+            try {
+                System.out.print("Please provide file to process:\t");
+                Scanner inputString = new Scanner(System.in);//new scanner
+                String fileName = inputString.nextLine();//scan file name
+                Scanner fileContents = new Scanner(new File(fileName));//load file to V-file
+                System.out.println("Original text from input file:\n");
+                while (fileContents.hasNext()){//display file
+                    System.out.print(fileContents.next() +" ");
+                }
+                BST_Ernst_Fanfan<String> loadedFile = new BST_Ernst_Fanfan<String>();//new BST
+                fileContents = new Scanner(new File(fileName));//reload file to V-file
+                load2BST(fileContents,loadedFile);
+                saveToFile(loadedFile);
+                System.out.println("\nProcessed text is saved to output file.");
+                exit =  true;
+            } catch (FileNotFoundException e) {
+                System.out.println("\nFile not fount!\n");
+                exit = false;
+            }
         }
     }
-    /**From file*/
-    public static void fromFile(){
-        BST_Ernst_Fanfan<String> tree = new BST_Ernst_Fanfan<>();//New BST
-        Scanner inputString = new Scanner(System.in);//new scanner
+
+    /**path 2 start*/
+    private static void processFromUser() {//request input from user then pass data to lvl 3
+        System.out.print("Please enter text to process:\t");
+        Scanner inputLine = new Scanner(System.in);//new scanner
+        String lineInputed =  inputLine.nextLine();//scan to string
+        System.out.println("Original Text:\n" + lineInputed);//feedback input
+        Scanner lineContent = new Scanner(lineInputed);//load string to new scanner
+        BST_Ernst_Fanfan<String> loadedFile = new BST_Ernst_Fanfan<String>();//new BST
+        load2BST(lineContent, loadedFile);//load input to BST
+        System.out.println("\nProcessed Text:");
+        loadedFile.inorder();//remove duplicates and display in order
+    }
+
+    /*********************
+     * Level 3 of Program*
+     * *******************/
+    /**all paths merge here*/
+    private static void load2BST(Scanner fileContents, BST_Ernst_Fanfan<String> loadedFile){//takes in test loads to BST
+        while(fileContents.hasNext()){
+            loadedFile.insert(fileContents.next());
+        }
+    }
+
+    /*********************
+     * Level 4 of Program*
+     * *******************/
+    /**save to file*/
+    public static void saveToFile(BST_Ernst_Fanfan<String> tree) {
         boolean exit = false;
-
-        /**start of method*/
-        while(exit != true) {
-            System.out.println("Processing from file!");
-            Menu_Ernst_Fanfan fileMenu = new Menu_Ernst_Fanfan();//new menu object
-            int choice = fileMenu.setChoice(2);//Scan and pass choice
-            exit = fileProcess(choice, tree);
-        }
-    }
-
-    /***************************************************
-     * Processing choices
-     ***************************************************/
-     /** Main menu*/
-    public static boolean process(int choice){
-        boolean exit = false;//exit trigger
-
-        /**switch between choices*/
-        switch (choice){
-            case 0://exit
-                System.out.println("Goodye!");
-                exit = true;//set to exit
-                break;
-            case 1://from file
-                fromFile();
-                break;
-            case 2://from user
-                fromUser();
-                break;
-        }
-        return exit;//return exit trigger
-    }
-    /**User input menu*/
-    public static boolean userProcess(int choice, BST_Ernst_Fanfan<String> tree, Stack_Ernst_Fanfan<String> originalTest){
-        boolean exit = false;//exit trigger
-
-        /**switch between choices*/
-        switch (choice){
-            case 0://to main menu
-                exit = true;//set to exit
-                break;
-            case 1://add node
-                System.out.println("Adding node");
-                addingNodeLoop(originalTest);
-                System.out.println("Current Tree:");
-                originalTest.printStack();
-                System.out.println();
-
-                break;
-            case 2://remove duplicate
-                System.out.println("Removing Duplicates");
-                System.out.println("\nOriginal Text:");
-                originalTest.printStack();
-                removeDuplicate(tree,originalTest);
-                System.out.println("\nProcessed Text:");
-                tree.inorder();
-                break;
-        }
-        return exit;//return exit trigger
-    }
-    /**Add Node menu*/
-    public static boolean addNodeProcess(int choice, Stack_Ernst_Fanfan<String> originalText){
-        boolean exit = false;//exit trigger
-        Scanner inputString = new Scanner(System.in);//New String Scanner
-
-        /**switch between choices*/
-        switch (choice){
-            case 0://to main menu
-                exit = true;//set to exit
-                break;
-            case 1://add node
-                System.out.print("Enter content of node:\t");
-                originalText.push(inputString.nextLine());
-                System.out.println("Current Text:\t");
-                originalText.printStack();
-                exit = false;
-                break;
-            case 2:
-                System.out.println("Removing "+originalText.top());//inform user
-                originalText.pop();
-                System.out.println("Current Text:\t");
-                originalText.printStack();
-                exit = false;
-                break;
-        }
-        return exit;//return exit trigger
-    }
-    /**File menu*/
-    public static boolean fileProcess(int choice, BST_Ernst_Fanfan<String> tree){
-        boolean exit = false;//exit trigger
-
-        /**switch between choices*/
-        switch (choice){
-            case 0://to main menu
-                exit = true;//set to exit
-                break;
-            case 1://load file and display
-                System.out.println("Displaying file content");
-                try {
-                     loadFile(tree);
-                } catch (IOException e) {
-                    System.out.println("File not found. Please make sure file is within folder.");
+        while (exit != true) {
+            try {
+                System.out.print("\nPlease provide output file:\t");
+                Scanner inputString = new Scanner(System.in);//new scanner
+                String fileName = inputString.nextLine();
+                File originalTest = new File(fileName);//creat logical file
+                originalTest.createNewFile();//create file
+                PrintStream output = new PrintStream(new File(fileName));//create output stream
+                Iterator iterator = tree.iterator();//iterate tree
+                while (iterator.hasNext()) {//save to file loop
+                    output.print(iterator.next() + " "); //read one word at a time
                 }
-                break;
-            case 2://Remove duplicate
-                System.out.println("Processing file");
-                System.out.println("Displaying file content");
-                try {
-                    loadFile(tree);
-                    System.out.println("\nProcessed text is saved to output file.");
-                    saveToFile(tree);
-                } catch (IOException e) {
-                    System.out.println("File not found. Please make sure file is within folder.");
-                }
-                break;
+                exit = true;
+            } catch (FileNotFoundException e) {
+                System.out.println("\nFile not fount!\n");
+            } catch (IOException e) {
+                System.out.println("\nUnable to save file in that location!\n");
+            }
         }
-        return exit;//return exit trigger
     }
 }
+
